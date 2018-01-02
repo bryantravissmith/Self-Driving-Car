@@ -2,6 +2,8 @@
 .DS_Store/
 .ipynb_checkpoints/
 data/
+model/
+models/
 *.p
 *.npy
 *.zip
