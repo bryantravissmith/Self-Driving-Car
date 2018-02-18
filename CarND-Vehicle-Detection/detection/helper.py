@@ -3,6 +3,7 @@ import cv2
 import numpy as np
 from skimage.feature import hog
 from scipy.ndimage.measurements import label
+from collections import deque
 
 def load_training_data_rgb(base_dir):
     non_vehicles = []
@@ -171,7 +172,7 @@ def draw_labeled_bboxes(img, heatmap):
 class CarDetectionPipeline():
 
     def __init__(self, model):
-        self.buffer = None
+        self.buffer = deque(maxlen = 15)
         self.model = model
 
     def transform(self, img):
@@ -180,24 +181,17 @@ class CarDetectionPipeline():
 
         car_heatmap = create_car_heatmap(img, self.model, scales=[1.0], ystart=375, ystop=375+64*2)
         car_heatmap += create_car_heatmap(img, self.model, scales=[1.33], ystart=400, ystop=700)
-        car_heatmap[car_heatmap <= 2] = 0
-        if self.buffer is None:
-            self.buffer = np.dstack([car_heatmap])
-        else:
-            self.buffer = np.dstack([self.buffer,car_heatmap])
+        car_heatmap[car_heatmap <= 3] = 0
+        boxes = (label(car_heatmap > 0)[0] > 0).astype(np.int)
+        self.buffer.append(boxes)
 
-        #self.buffer[self.buffer <= 10] = 0
-        #print(self.buffer.max())
+        tmp = (np.array(self.buffer).sum(axis=0) == len(self.buffer)).astype(int)*255
 
-        if self.buffer.shape[2] >= 11:
-            self.buffer = self.buffer[:,:,1:]
-
-        tmp = (self.buffer.sum(axis=2) > self.buffer.shape[2]*3).astype(int)*255
-
-        if self.buffer.shape[2] > 3:
+        if len(self.buffer) > 3:
             img = draw_labeled_bboxes(img, tmp)
 
         base[:,:img.shape[1]:,:] = img
         base[:,img.shape[1]:,:] = np.dstack([np.uint8(255 * car_heatmap / car_heatmap.max())]*3)
+        #base[:,img.shape[1]:,:] = np.dstack([np.uint8(255 * boxes)]*3)
 
         return np.uint8(base)
