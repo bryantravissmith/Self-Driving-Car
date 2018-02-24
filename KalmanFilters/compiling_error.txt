@@ -1,0 +1,6 @@
+/tmp/ccSMmJRL.o: In function `main':
+kalman_filter_laser.cpp:(.text+0x379): undefined reference to `Tracking::Tracking()'
+kalman_filter_laser.cpp:(.text+0x3d8): undefined reference to `Tracking::ProcessMeasurement(MeasurementPackage const&)'
+kalman_filter_laser.cpp:(.text+0x418): undefined reference to `Tracking::~Tracking()'
+kalman_filter_laser.cpp:(.text+0x503): undefined reference to `Tracking::~Tracking()'
+collect2: error: ld returned 1 exit status
