@@ -67,6 +67,15 @@ public:
   ///* Sigma point spreading parameter
   double lambda_;
 
+  float radar_counter_;
+  float laser_counter_;
+  float nis_laser_above_thresh_counter_;
+  float nis_radar_above_thresh_counter_;
+
+  MatrixXd H_;
+  MatrixXd R_laser_;
+  MatrixXd R_radar_;
+
 
   /**
    * Constructor
@@ -78,6 +87,7 @@ public:
    */
   virtual ~UKF();
 
+  void AdjustAngle(double *angle);
   /**
    * ProcessMeasurement
    * @param meas_package The latest measurement data of either radar or laser
