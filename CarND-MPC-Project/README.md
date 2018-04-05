@@ -17,8 +17,8 @@ These equations/constrains are used to sequentially predict the future state of 
 
 The function being optimized for this project is:
 
-\sigma_{t} cte^2_{t} + psie^2_{t} + 0.1*(v_{t} - v_ref)^2 + a^2_{t} \\
-    \delta^2_{t} + (\delta_{t+1} - \delta{t})^2 + (a{t+1} - a{t})^2
+\sigma_{t} cte^2_{t} + psie^2_{t} + 0.1*(v_{t} - v_ref)^2 + a^2_{t}   
+    \delta^2_{t} + (\delta_{t+1} - \delta{t})^2 + (a{t+1} - a{t})^2  
 
 The first term is to reduce the perpendicular distance from the target path, and the second term is to reduce the different in the orientation from the target trajectory.  The third term is to push the car to a target velocity, and the fourth and fifth terms are to minimize the use of the actuators.   The final two terms are to minimize the change in actuators over time so that the actuators are used in smooth ways.  The third term is multiplied by 0.1 to reduce the drive of meeting the reference speed and prioritize smooth transitions and error minimization. Functionally this reduces the breaking of the car speeding and and slowing down around the target velocity.
 
