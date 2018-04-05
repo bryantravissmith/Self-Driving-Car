@@ -2,6 +2,30 @@
 Self-Driving Car Engineer Nanodegree Program
 
 ---
+## Report
+
+The markov predictive control project uses the current state of a car in the simulator that is described by its x-position (x), y-position (y), orientation (\theta), speed (v), steering angle (\delta) and throttle (a) and a target path describe by a best fit line of of waypoints to set the actuators (steering angle and throttle) in order to drive along the target path.
+
+The actuator settings are found by solving a constrained optimization problem.  In this case, the constrains are the kinematic 2D motion equations of a car described by a bicycle model.  These kinematic equations are below:
+
+x_{t+1} = x_{t} + v_{t} * cos(\theta_{t}) * dt
+y_{t+1} = y_{t} + v_{t} * sin(\theta_{t}) * dt
+\theta_{t+1} = \theta_{t} - v_{t} * \delta_{t} * dt / L
+v_{t+1} = v_{t} + a_{t} * dt
+
+These equations/constrains are used to sequentially predict the future state of the car giving the current state of a car and a future set of actuator settings.  The markov assumption is that the each state is the only information needed to predict future states.  This project predicts 1 second into the future in 50ms increments.    
+
+The function being optimized for this project is:
+
+\sigma_{t} cte^2_{t} + psie^2_{t} + 0.1*(v_{t} - v_ref)^2 + a^2_{t} \\
+    \delta^2_{t} + (\delta_{t+1} - \delta{t})^2 + (a{t+1} - a{t})^2
+
+The first term is to reduce the perpendicular distance from the target path, and the second term is to reduce the different in the orientation from the target trajectory.  The third term is to push the car to a target velocity, and the fourth and fifth terms are to minimize the use of the actuators.   The final two terms are to minimize the change in actuators over time so that the actuators are used in smooth ways.  The third term is multiplied by 0.1 to reduce the drive of meeting the reference speed and prioritize smooth transitions and error minimization. Functionally this reduces the breaking of the car speeding and and slowing down around the target velocity.
+
+The target path is defined in the car coordinate system, so the waypoints have to be transformed from the global coordinate system they are given  into the local coordinate system of the car.  This is done by taking the vector positional difference between the waypoint and the car, then rotating that difference into the car's orientation.   
+
+Finally, there is latency between when the program calculates the path and when the actuators are set to execute that planned path.  In this case the latency is 100ms, so the program returns the actuator values 100ms into the path and constrains the initial actuator values to be what they are.
+
 
 ## Dependencies
 
