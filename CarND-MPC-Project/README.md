@@ -8,10 +8,10 @@ The markov predictive control project uses the current state of a car in the sim
 
 The actuator settings are found by solving a constrained optimization problem.  In this case, the constrains are the kinematic 2D motion equations of a car described by a bicycle model.  These kinematic equations are below:
 
-x_{t+1} = x_{t} + v_{t} * cos(\theta_{t}) * dt
-y_{t+1} = y_{t} + v_{t} * sin(\theta_{t}) * dt
-\theta_{t+1} = \theta_{t} - v_{t} * \delta_{t} * dt / L
-v_{t+1} = v_{t} + a_{t} * dt
+x_{t+1} = x_{t} + v_{t} * cos(\theta_{t}) * dt  
+y_{t+1} = y_{t} + v_{t} * sin(\theta_{t}) * dt  
+\theta_{t+1} = \theta_{t} - v_{t} * \delta_{t} * dt / L  
+v_{t+1} = v_{t} + a_{t} * dt  
 
 These equations/constrains are used to sequentially predict the future state of the car giving the current state of a car and a future set of actuator settings.  The markov assumption is that the each state is the only information needed to predict future states.  This project predicts 1 second into the future in 50ms increments.    
 
