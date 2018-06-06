@@ -5,7 +5,7 @@ Self-Driving Car Engineer Nanodegree Program
 
 ## High Level Overview
 
-![Solution Image]{https://github.com/bryantravissmith/Self-Driving-Car/raw/master/CarND-Path-Planning-Project/path_planning.png}
+![Solution Image](https://github.com/bryantravissmith/Self-Driving-Car/raw/master/CarND-Path-Planning-Project/path_planning.png)
 
 The solution to this path planning project involved a couple of heuristics and cost function optimizations.   The goal was to create a framing that would reduce the complexity.
 
