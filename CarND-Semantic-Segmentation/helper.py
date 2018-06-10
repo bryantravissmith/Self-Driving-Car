@@ -75,7 +75,7 @@ def gen_batch_function(data_folder, image_shape):
         label_paths = {
             re.sub(r'_(lane|road)_', '_', os.path.basename(path)): path
             for path in glob(os.path.join(data_folder, 'gt_image_2', '*_road_*.png'))}
-        background_color = np.array([255, 0, 0])
+        background_color = np.array([255, 0, 255])
 
         random.shuffle(image_paths)
         for batch_i in range(0, len(image_paths), batch_size):
@@ -89,10 +89,15 @@ def gen_batch_function(data_folder, image_shape):
 
                 gt_bg = np.all(gt_image == background_color, axis=2)
                 gt_bg = gt_bg.reshape(*gt_bg.shape, 1)
-                gt_image = np.concatenate((gt_bg, np.invert(gt_bg)), axis=2)
+                gt_image = np.concatenate((np.invert(gt_bg), gt_bg), axis=2)
+
+                # Convert image to float
+                #image = image.astype(np.float32)
 
                 images.append(image)
                 gt_images.append(gt_image)
+
+
 
             yield np.array(images), np.array(gt_images)
     return get_batches_fn
