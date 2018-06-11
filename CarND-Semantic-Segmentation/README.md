@@ -1,7 +1,11 @@
 # Semantic Segmentation
 
 # Writeup
+## Implementation
 
+This repo implements FCN for  Semantic Segmentation as implmented in this paper:
+
+[https://people.eecs.berkeley.edu/~jonlong/long_shelhamer_fcn.pdf](https://people.eecs.berkeley.edu/~jonlong/long_shelhamer_fcn.pdf)
 
 ### Optimized Graphs
 ```
